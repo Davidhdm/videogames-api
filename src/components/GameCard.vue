@@ -5,8 +5,8 @@
     </div>
     <div class="game_info">
       <span class="game_title">{{ title }}</span>
-      <span class="game_played">{{ gameIsPlayed }}</span>
-      <span class="game_year">{{ release_year }}</span>
+      <span :class="gameIsPlayedClass">{{ gameIsPlayed }}</span>
+      <span class="game_year">{{'Released in ' + release_year }}</span>
       <span class="game_categories">{{ categories }}</span>
     </div>
   </div>
@@ -28,6 +28,9 @@ export default {
   computed: {
     gameIsPlayed () {
       return this.played ? 'Finished' : 'Not played yet'
+    },
+    gameIsPlayedClass () {
+      return this.played ? 'game_played' : 'game_notplayed'
     }
   }
 }
@@ -79,6 +82,21 @@ export default {
 .game_title {
   font-weight: 700;
 }
+
+.game_categories {
+  font-style: italic;
+}
+
+.game_played {
+  color: rgb(1, 173, 1);
+  font-weight: 700;
+}
+
+.game_notplayed {
+  color: red;
+  font-weight: 700;
+}
+
 .game_title,
 .game_played,
 .game_year,
