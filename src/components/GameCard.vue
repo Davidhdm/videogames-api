@@ -5,7 +5,7 @@
     </div>
     <div class="game_info">
       <span class="game_title">{{ title }}</span>
-      <span :class="gameIsPlayedClass">{{ gameIsPlayed }}</span>
+      <span :class="gameIsPlayedClass">{{ played }}</span>
       <span class="game_year">{{ 'Released in ' + release_year }}</span>
       <span class="game_categories">{{ categories }}</span>
     </div>
@@ -18,7 +18,7 @@ export default {
   props: {
     img: String,
     title: String,
-    played: Boolean,
+    played: String,
     release_year: Number,
     categories: String
   },
@@ -26,11 +26,14 @@ export default {
 
   },
   computed: {
-    gameIsPlayed () {
-      return this.played ? 'Finished' : 'Not played yet'
-    },
     gameIsPlayedClass () {
-      return this.played ? 'game_played' : 'game_notplayed'
+      if (this.played === 'Played') {
+        return 'game_played'
+      }
+      if (this.played === 'In progress') {
+        return 'game_inprogress'
+      }
+      return 'game_notplayed'
     }
   }
 }
@@ -102,6 +105,11 @@ export default {
 
 .game_notplayed {
   color: red;
+  font-weight: 700;
+}
+
+.game_inprogress {
+  color: rgb(0, 157, 255);
   font-weight: 700;
 }
 

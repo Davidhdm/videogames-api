@@ -3,7 +3,7 @@
     <form class="newgame_card" v-if="creating">
       <div class="newgame_imgContainer">
         <textarea v-model="newGame.img" class="newgame_img" name="newgame_img" placeholder="Game picture" cols="30" rows="10"></textarea>
-        <button class="newgame_submit" type="submit">
+        <button @click.prevent="createGame" class="newgame_submit" type="submit">
           <span class="iconify" data-icon="subway:tick"></span>
         </button>
       </div>
@@ -15,7 +15,7 @@
             <label for="radio_played">Played</label>
           </div>
           <div class="radio_option">
-            <input type="radio" v-model="newGame.played" id="radio_notplayed" name="newgame_played" value="Not played yet">
+            <input type="radio" v-model="newGame.played" id="radio_notplayed" name="newgame_played" value="Not played">
             <label for="radio_notplayed">Not played</label>
           </div>
           <div class="radio_option">
@@ -26,6 +26,9 @@
         <input type="number" v-model="newGame.release_year" class="newgame_year" name="newgame_year" placeholder="Game release year">
         <input type="text" v-model="newGame.categories" class="newgame_categories" name="newgame_categories" placeholder="Categories">
       </div>
+      <button @click="hideCreateCard" class="cancelCreate">
+        <span class="iconify cancelCreate_icon" data-icon="ci:close-small"></span>
+      </button>
     </form>
 
     <GameCard
@@ -38,7 +41,7 @@
       v-bind:key="game"
     />
     <button v-if="!creating" @click="showCreateCard" class="createGame">
-      <span class="iconify createGame_icon" data-icon="bi:plus-lg"></span>
+      <span class="iconify createGame_icon" data-icon="mdi:plus-thick"></span>
     </button>
   </main>
 </template>
@@ -73,7 +76,22 @@ export default {
       })
     },
     showCreateCard () {
-      this.creating = !this.creating
+      this.creating = true
+    },
+    hideCreateCard () {
+      this.creating = false
+    },
+    async createGame () {
+      const newGame = this.newGame
+      const response = await gameService.createGame(newGame)
+
+      this.games = [...this.games, response.data]
+
+      this.newGame.title = ''
+      this.newGame.img = ''
+      this.newGame.played = ''
+      this.newGame.release_year = null
+      this.newGame.title = ''
     }
   },
   created () {
@@ -93,6 +111,7 @@ export default {
 }
 
 .newgame_card {
+  position: relative;
   height: 165px;
   max-width: 450px;
   min-width: 450px;
@@ -196,6 +215,7 @@ export default {
   padding: 3px 3px;
   padding-top: 6px;
   border-radius: 4px;
+  font-size: 130%;
 }
 
 .createGame {
@@ -209,11 +229,26 @@ export default {
   bottom: 75px;
   left: 75px;
   text-align: center;
+  font-size: 220%;
 }
 
-.createGame, .newgame_submit {
+.cancelCreate {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 300px;
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  text-align: center;
+  font-size: 180%;
+  padding: 0;
+}
+
+.createGame, .newgame_submit, .cancelCreate {
   background-color: rgb(95, 185, 241);
-  font-size: 130%;
   cursor: pointer;
   border: solid 1px rgb(0, 157, 255);
   transition:
@@ -225,7 +260,9 @@ export default {
 .newgame_submit:hover,
 .newgame_submit:active,
 .createGame:hover,
-.createGame:active {
+.createGame:active,
+.cancelCreate:hover,
+.cancelCreate:active {
   color: rgb(0, 157, 255);
   background-color: white;
 }
