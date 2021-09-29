@@ -91,7 +91,7 @@ export default {
       this.newGame.img = ''
       this.newGame.played = ''
       this.newGame.release_year = null
-      this.newGame.title = ''
+      this.newGame.categories = ''
     }
   },
   created () {
