@@ -3,10 +3,12 @@
     <div class="game_imgContainer">
       <img class="game_img" :src="img" :alt="'Picture of ' + title">
     </div>
-    <span class="game_title">{{ title }}</span>
-    <span class="game_played">{{ gameIsPlayed }}</span>
-    <span class="game_year">{{ release_year }}</span>
-    <span class="game_categories">{{ categories }}</span>
+    <div class="game_info">
+      <span class="game_title">{{ title }}</span>
+      <span class="game_played">{{ gameIsPlayed }}</span>
+      <span class="game_year">{{ release_year }}</span>
+      <span class="game_categories">{{ categories }}</span>
+    </div>
   </div>
 </template>
 
@@ -30,3 +32,58 @@ export default {
   }
 }
 </script>
+
+<style>
+.game_card {
+  height: 150px;
+  max-width: 450px;
+  min-width: 450px;
+  display:flex;
+  margin: 30px;
+  width: fit-content;
+  border-radius: 10px;
+  align-items: center;
+}
+
+.game_imgContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-width: 110px;
+  object-fit: cover;
+  /* object-position: left; */
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  overflow: hidden;
+}
+
+.game_img {
+  height: 100%;
+}
+
+.game_info {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  height: calc(100% - 42px);
+  width: 100%;
+  padding: 20px 30px;
+  /* margin: auto 0; */
+  border-top: 1px solid rgb(209, 209, 209);
+  border-right: 1px solid rgb(209, 209, 209);
+  border-bottom: 1px solid rgb(209, 209, 209);
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.game_title {
+  font-weight: 700;
+}
+.game_title,
+.game_played,
+.game_year,
+.game_categories {
+  margin: 5px 0;
+}
+</style>

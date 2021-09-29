@@ -42,3 +42,12 @@ export default {
   }
 }
 </script>
+
+<style>
+.games {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 0px auto;
+  width: max-content;
+}
+</style>
