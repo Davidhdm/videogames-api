@@ -6,7 +6,7 @@
     <div class="game_info">
       <span class="game_title">{{ title }}</span>
       <span :class="gameIsPlayedClass">{{ gameIsPlayed }}</span>
-      <span class="game_year">{{'Released in ' + release_year }}</span>
+      <span class="game_year">{{ 'Released in ' + release_year }}</span>
       <span class="game_categories">{{ categories }}</span>
     </div>
   </div>
