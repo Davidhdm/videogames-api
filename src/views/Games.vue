@@ -1,8 +1,5 @@
 <template>
   <div class="games">
-    <!-- <div v-for="game in games" v-bind:key="game">
-      {{ game.title }}
-    </div> -->
     <GameCard
       :img="game.img"
       :title="game.title"
@@ -45,9 +42,11 @@ export default {
 
 <style>
 .games {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
   margin: 0px auto;
-  width: max-content;
+  max-width: max-content;
 }
 </style>

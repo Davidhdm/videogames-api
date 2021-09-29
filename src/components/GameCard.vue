@@ -35,7 +35,7 @@ export default {
 
 <style>
 .game_card {
-  height: 150px;
+  height: 165px;
   max-width: 450px;
   min-width: 450px;
   display:flex;
@@ -52,7 +52,6 @@ export default {
   height: 100%;
   min-width: 110px;
   object-fit: cover;
-  /* object-position: left; */
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
   overflow: hidden;
@@ -65,11 +64,11 @@ export default {
 .game_info {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   text-align: left;
   height: calc(100% - 42px);
   width: 100%;
   padding: 20px 30px;
-  /* margin: auto 0; */
   border-top: 1px solid rgb(209, 209, 209);
   border-right: 1px solid rgb(209, 209, 209);
   border-bottom: 1px solid rgb(209, 209, 209);
@@ -85,5 +84,12 @@ export default {
 .game_year,
 .game_categories {
   margin: 5px 0;
+}
+
+@media (max-width: 414px) {
+  .game_card {
+    min-width: 350px;
+    max-width: 350px;
+  }
 }
 </style>
