@@ -1,5 +1,33 @@
 <template>
   <main class="games">
+    <form class="newgame_card" v-if="creating">
+      <div class="newgame_imgContainer">
+        <textarea v-model="newGame.img" class="newgame_img" name="newgame_img" placeholder="Game picture" cols="30" rows="10"></textarea>
+        <button class="newgame_submit" type="submit">
+          <span class="iconify" data-icon="subway:tick"></span>
+        </button>
+      </div>
+      <div class="newgame_info">
+        <input type="text" v-model="newGame.title" class="newgame_title" name="newgame_title" placeholder="Game title">
+        <div class="radiobuttons">
+          <div class="radio_option">
+            <input type="radio" v-model="newGame.played" id="radio_played" name="newgame_played" value="Played">
+            <label for="radio_played">Played</label>
+          </div>
+          <div class="radio_option">
+            <input type="radio" v-model="newGame.played" id="radio_notplayed" name="newgame_played" value="Not played yet">
+            <label for="radio_notplayed">Not played</label>
+          </div>
+          <div class="radio_option">
+            <input type="radio" v-model="newGame.played" id="radio_inprogress" name="newgame_played" value="In progress">
+            <label for="radio_inprogress">In progress</label>
+          </div>
+        </div>
+        <input type="number" v-model="newGame.release_year" class="newgame_year" name="newgame_year" placeholder="Game release year">
+        <input type="text" v-model="newGame.categories" class="newgame_categories" name="newgame_categories" placeholder="Categories">
+      </div>
+    </form>
+
     <GameCard
       :img="game.img"
       :title="game.title"
@@ -9,34 +37,9 @@
       v-for="game in games"
       v-bind:key="game"
     />
-
-    <form class="newgame_card">
-      <div class="newgame_imgContainer">
-        <textarea class="newgame_img" name="newgame_img" placeholder="Game picture" cols="30" rows="10"></textarea>
-        <button class="newgame_submit" type="submit">
-          <span class="iconify" data-icon="subway:tick"></span>
-        </button>
-      </div>
-      <div class="newgame_info">
-        <input type="text" class="newgame_title" name="newgame_title" placeholder="Game title">
-        <div class="radiobuttons">
-          <div class="radio_option">
-            <input type="radio" id="radio_played" name="newgame_played" value="Played">
-            <label for="radio_played">Played</label>
-          </div>
-          <div class="radio_option">
-            <input type="radio" id="radio_notplayed" name="newgame_played" value="Not played yet">
-            <label for="radio_notplayed">Not played</label>
-          </div>
-          <div class="radio_option">
-            <input type="radio" id="radio_inprogress" name="newgame_played" value="In progress">
-            <label for="radio_inprogress">In progress</label>
-          </div>
-        </div>
-        <input type="number" class="newgame_year" name="newgame_year" placeholder="Game release year">
-        <input type="text" class="newgame_categories" name="newgame_categories" placeholder="Categories">
-      </div>
-    </form>
+    <button v-if="!creating" @click="showCreateCard" class="createGame">
+      <span class="iconify createGame_icon" data-icon="bi:plus-lg"></span>
+    </button>
   </main>
 </template>
 
@@ -51,6 +54,7 @@ export default {
   },
   data () {
     return {
+      creating: false,
       games: [],
       newGame: {
         title: '',
@@ -67,6 +71,9 @@ export default {
       request.data.forEach(game => {
         this.games.push(game)
       })
+    },
+    showCreateCard () {
+      this.creating = !this.creating
     }
   },
   created () {
@@ -184,14 +191,30 @@ export default {
 }
 
 .newgame_submit {
-  background-color: rgb(95, 185, 241);
   margin-bottom: 20px;
   width: 102px;
   padding: 3px 3px;
   padding-top: 6px;
+  border-radius: 4px;
+}
+
+.createGame {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 300px;
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  bottom: 75px;
+  left: 75px;
+  text-align: center;
+}
+
+.createGame, .newgame_submit {
+  background-color: rgb(95, 185, 241);
   font-size: 130%;
   cursor: pointer;
-  border-radius: 4px;
   border: solid 1px rgb(0, 157, 255);
   transition:
     color 0.15s ease,
@@ -199,7 +222,10 @@ export default {
     transform 0.15s ease;
 }
 
-.newgame_submit:hover, .newgame_submit:active {
+.newgame_submit:hover,
+.newgame_submit:active,
+.createGame:hover,
+.createGame:active {
   color: rgb(0, 157, 255);
   background-color: white;
 }
