@@ -14,5 +14,8 @@ export const gameService = {
       release_year: newGame.release_year,
       categories: newGame.categories
     })
+  },
+  deleteGame (id) {
+    return axios.delete(baseURL + '/api/games/' + id)
   }
 }

@@ -32,6 +32,8 @@
     </form>
 
     <GameCard
+      @deleteGame="deleteGame"
+      :id="game.id"
       :img="game.img"
       :title="game.title"
       :played="game.played"
@@ -77,6 +79,7 @@ export default {
     },
     showCreateCard () {
       this.creating = true
+      window.scrollTo(0, 0)
     },
     hideCreateCard () {
       this.creating = false
@@ -92,6 +95,14 @@ export default {
       this.newGame.played = ''
       this.newGame.release_year = null
       this.newGame.categories = ''
+    },
+    async deleteGame (id) {
+      try {
+        await gameService.deleteGame(id)
+        this.games = this.games.filter(game => game.id !== id)
+      } catch (e) {
+        alert('Failed to delete')
+      }
     }
   },
   created () {
@@ -126,7 +137,7 @@ export default {
 }
 
 .newgame_card:hover, .newgame_card:focus-within {
-  transform: scale(1.1);
+  transform: scale(1.07);
 }
 
 .newgame_imgContainer {
@@ -225,7 +236,7 @@ export default {
   border-radius: 300px;
   width: 50px;
   height: 50px;
-  position: absolute;
+  position: fixed;
   bottom: 75px;
   left: 75px;
   text-align: center;
