@@ -86,9 +86,11 @@ export default {
   height: calc(100% - 42px);
   width: 100%;
   padding: 20px 30px;
-  border-top: 1px solid rgb(209, 209, 209);
+  /* border-top: 1px solid rgb(209, 209, 209);
   border-right: 1px solid rgb(209, 209, 209);
-  border-bottom: 1px solid rgb(209, 209, 209);
+  border-bottom: 1px solid rgb(209, 209, 209); */
+  border: 1px solid rgb(209, 209, 209);
+  border-left: none;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
@@ -137,23 +139,22 @@ export default {
   transition:
     color 0.15s ease,
     background-color 0.15s ease,
-    transform 0.15s ease;
 }
 
 .editGame {
   border-radius: 7px 0 0 7px;
-  border-right: none;
   right: 24px;
   background-color: rgb(95, 185, 241);
   border: solid 1px rgb(0, 157, 255);
+  border-right: none;
 }
 
 .deleteGame {
   border-radius: 0 7px 7px 0;
-  border-left: none;
   right: -10px;
   background-color: rgb(240, 60, 60);
   border: solid 1px rgb(226, 36, 36);
+  border-left: none;
 }
 
 .deleteGame:hover,

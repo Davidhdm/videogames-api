@@ -245,9 +245,8 @@ export default {
   height: calc(100% - 42px);
   width: 100%;
   padding: 20px 30px;
-  border-top: 1px solid rgb(209, 209, 209);
-  border-right: 1px solid rgb(209, 209, 209);
-  border-bottom: 1px solid rgb(209, 209, 209);
+  border: 1px solid rgb(209, 209, 209);
+  border-left: none;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
