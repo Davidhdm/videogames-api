@@ -31,14 +31,41 @@
       </button>
     </form>
 
+    <form class="newgame_card" v-if="editing">
+      <div class="newgame_imgContainer">
+        <textarea v-model="gameToEdit.img" class="newgame_img" name="newgame_img" placeholder="Game picture" cols="30" rows="10"></textarea>
+        <button @click.prevent="editGame" class="editgame_submit" type="submit">
+          <span class="iconify" data-icon="subway:tick"></span>
+        </button>
+      </div>
+      <div class="newgame_info">
+        <input type="text" v-model="gameToEdit.title" class="newgame_title" name="newgame_title" placeholder="Game title">
+        <div class="radiobuttons">
+          <div class="radio_option">
+            <input type="radio" v-model="gameToEdit.played" id="radio_played_edit" name="newgame_played" value="Played">
+            <label for="radio_played_edit">Played</label>
+          </div>
+          <div class="radio_option">
+            <input type="radio" v-model="gameToEdit.played" id="radio_notplayed_edit" name="newgame_played" value="Not played">
+            <label for="radio_notplayed_edit">Not played</label>
+          </div>
+          <div class="radio_option">
+            <input type="radio" v-model="gameToEdit.played" id="radio_inprogress_edit" name="newgame_played" value="In progress">
+            <label for="radio_inprogress_edit">In progress</label>
+          </div>
+        </div>
+        <input type="number" v-model="gameToEdit.release_year" class="newgame_year" name="newgame_year" placeholder="Game release year">
+        <input type="text" v-model="gameToEdit.categories" class="newgame_categories" name="newgame_categories" placeholder="Categories">
+      </div>
+      <button @click="hideEditCard" class="cancelCreate">
+        <span class="iconify cancelCreate_icon" data-icon="ci:close-small"></span>
+      </button>
+    </form>
+
     <GameCard
       @deleteGame="deleteGame"
-      :id="game.id"
-      :img="game.img"
-      :title="game.title"
-      :played="game.played"
-      :release_year="game.release_year"
-      :categories="game.categories"
+      @showEditCard="showEditCard"
+      :game="game"
       v-for="game in games"
       v-bind:key="game"
     />
@@ -60,8 +87,24 @@ export default {
   data () {
     return {
       creating: false,
+      editing: false,
       games: [],
+      gameToEdit: {
+        id: null,
+        title: '',
+        img: '',
+        played: '',
+        release_year: null,
+        categories: ''
+      },
       newGame: {
+        title: '',
+        img: '',
+        played: '',
+        release_year: null,
+        categories: ''
+      },
+      editedGame: {
         title: '',
         img: '',
         played: '',
@@ -78,6 +121,7 @@ export default {
       })
     },
     showCreateCard () {
+      this.editing = false
       this.creating = true
       window.scrollTo(0, 0)
     },
@@ -100,8 +144,41 @@ export default {
       try {
         await gameService.deleteGame(id)
         this.games = this.games.filter(game => game.id !== id)
-      } catch (e) {
-        alert('Failed to delete')
+      } catch (error) {
+        alert('Failed to delete' + error)
+      }
+    },
+    showEditCard (game) {
+      this.gameToEdit.id = game.id
+      this.gameToEdit.title = game.title
+      this.gameToEdit.img = game.img
+      this.gameToEdit.played = game.played
+      this.gameToEdit.release_year = game.release_year
+      this.gameToEdit.categories = game.categories
+
+      this.creating = false
+      this.editing = true
+      window.scrollTo(0, 0)
+    },
+    hideEditCard () {
+      this.editing = false
+    },
+    async editGame () {
+      try {
+        const editedGame = this.gameToEdit
+        await gameService.editGame(editedGame.id, editedGame)
+        this.hideEditCard()
+        this.games.forEach((game) => {
+          if (game.id === editedGame.id) {
+            game.title = editedGame.title
+            game.img = editedGame.img
+            game.played = editedGame.played
+            game.release_year = editedGame.release_year
+            game.categories = editedGame.categories
+          }
+        })
+      } catch (error) {
+        alert('Failed to edit' + error)
       }
     }
   },
@@ -141,7 +218,6 @@ export default {
 }
 
 .newgame_imgContainer {
-  /* position: relative; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -227,13 +303,33 @@ export default {
   padding-top: 6px;
   border-radius: 4px;
   font-size: 130%;
+  background-color: rgb(90, 235, 90);
+  border: solid 1px rgb(31, 209, 31);
+}
+
+.editgame_submit {
+  margin-bottom: 20px;
+  width: 102px;
+  padding: 3px 3px;
+  padding-top: 6px;
+  border-radius: 4px;
+  font-size: 130%;
+  background-color: rgb(95, 185, 241);
+  border: solid 1px rgb(0, 157, 255);
+  cursor: pointer;
+}
+
+.editgame_submit:hover,
+.editgame_submit:active {
+  color: rgb(0, 157, 255);
+  background-color: white;
 }
 
 .createGame {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 300px;
+  border-radius: 7px;
   width: 50px;
   height: 50px;
   position: fixed;
@@ -241,13 +337,15 @@ export default {
   left: 75px;
   text-align: center;
   font-size: 220%;
+  background-color: rgb(90, 235, 90);
+  border: solid 1px rgb(31, 209, 31);
 }
 
 .cancelCreate {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 300px;
+  border-radius: 7px;
   width: 35px;
   height: 35px;
   position: absolute;
@@ -256,25 +354,31 @@ export default {
   text-align: center;
   font-size: 180%;
   padding: 0;
+  background-color: rgb(240, 60, 60);
+  border: solid 1px rgb(226, 36, 36);
 }
 
-.createGame, .newgame_submit, .cancelCreate {
-  background-color: rgb(95, 185, 241);
+.createGame:hover,
+.createGame:active,
+.newgame_submit:hover,
+.newgame_submit:active {
+  color: rgb(31, 209, 31);
+  background-color: white;
+}
+
+.createGame, .cancelCreate, .newgame_submit, .editgame_submit {
+  /* background-color: rgb(95, 185, 241); */
   cursor: pointer;
-  border: solid 1px rgb(0, 157, 255);
+  /* border: solid 1px rgb(0, 157, 255); */
   transition:
     color 0.15s ease,
     background-color 0.15s ease,
     transform 0.15s ease;
 }
 
-.newgame_submit:hover,
-.newgame_submit:active,
-.createGame:hover,
-.createGame:active,
 .cancelCreate:hover,
 .cancelCreate:active {
-  color: rgb(0, 157, 255);
+  color: rgb(240, 60, 60);
   background-color: white;
 }
 

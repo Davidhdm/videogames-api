@@ -1,49 +1,38 @@
 <template>
   <div class="game_card">
     <div class="game_imgContainer">
-      <img class="game_img" :src="img" :alt="'Picture of ' + title">
+      <img class="game_img" :src="game.img" :alt="'Picture of ' + game.title">
     </div>
     <div class="game_info">
-      <span class="game_title">{{ title }}</span>
-      <span :class="gameIsPlayedClass">{{ played }}</span>
-      <span class="game_year">{{ 'Released in ' + release_year }}</span>
-      <span class="game_categories">{{ categories }}</span>
+      <span class="game_title">{{ game.title }}</span>
+      <span :class="gameIsPlayedClass">{{ game.played }}</span>
+      <span class="game_year">{{ 'Released in ' + game.release_year }}</span>
+      <span class="game_categories">{{ game.categories }}</span>
     </div>
-    <button @click="$emit('deleteGame', id)" class="deleteGame">
+    <button @click="$emit('showEditCard', game)" class="editGame">
+      <span class="iconify" data-icon="clarity:edit-line"></span>
+    </button>
+    <button @click="$emit('deleteGame', game.id)" class="deleteGame">
       <span class="iconify deleteGame_icon" data-icon="carbon:delete"></span>
     </button>
   </div>
 </template>
 
 <script>
-/* import { gameService } from '@/services/gameService.js' */
-
 export default {
   name: 'GameCard',
   props: {
-    id: Number,
-    img: String,
-    title: String,
-    played: String,
-    release_year: Number,
-    categories: String
+    game: Object
   },
   methods: {
-    /* async deleteGame (id) {
-      try {
-        await gameService.deleteGame(id)
-        this.emit('deleteGame', id)
-      } catch (e) {
-        alert('Failed to delete')
-      }
-    } */
+
   },
   computed: {
     gameIsPlayedClass () {
-      if (this.played === 'Played') {
+      if (this.game.played === 'Played') {
         return 'game_played'
       }
-      if (this.played === 'In progress') {
+      if (this.game.played === 'In progress') {
         return 'game_inprogress'
       }
       return 'game_notplayed'
@@ -134,30 +123,47 @@ export default {
   margin: 5px 0;
 }
 
-.deleteGame {
+.deleteGame, .editGame {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 300px;
   width: 35px;
   height: 35px;
   position: absolute;
   top: -10px;
-  right: -10px;
-  text-align: center;
   font-size: 180%;
   padding: 7px;
-  background-color: rgb(95, 185, 241);
   cursor: pointer;
-  border: solid 1px rgb(0, 157, 255);
   transition:
     color 0.15s ease,
     background-color 0.15s ease,
     transform 0.15s ease;
 }
 
+.editGame {
+  border-radius: 7px 0 0 7px;
+  border-right: none;
+  right: 24px;
+  background-color: rgb(95, 185, 241);
+  border: solid 1px rgb(0, 157, 255);
+}
+
+.deleteGame {
+  border-radius: 0 7px 7px 0;
+  border-left: none;
+  right: -10px;
+  background-color: rgb(240, 60, 60);
+  border: solid 1px rgb(226, 36, 36);
+}
+
 .deleteGame:hover,
 .deleteGame:active {
+  color: rgb(240, 60, 60);
+  background-color: white;
+}
+
+.editGame:hover,
+.editGame:active {
   color: rgb(0, 157, 255);
   background-color: white;
 }
