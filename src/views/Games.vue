@@ -103,65 +103,37 @@ export default {
         played: '',
         release_year: null,
         categories: ''
-      },
-      editedGame: {
-        title: '',
-        img: '',
-        played: '',
-        release_year: null,
-        categories: ''
       }
     }
   },
   methods: {
     async getAllGames () {
-      const request = await gameService.getAllGames()
-      request.data.forEach(game => {
-        this.games.push(game)
-      })
-    },
-    showCreateCard () {
-      this.editing = false
-      this.creating = true
-      window.scrollTo(0, 0)
-    },
-    hideCreateCard () {
-      this.creating = false
-    },
-    async createGame () {
-      const newGame = this.newGame
-      const response = await gameService.createGame(newGame)
-
-      this.games = [...this.games, response.data]
-
-      this.newGame.title = ''
-      this.newGame.img = ''
-      this.newGame.played = ''
-      this.newGame.release_year = null
-      this.newGame.categories = ''
-    },
-    async deleteGame (id) {
       try {
-        await gameService.deleteGame(id)
-        this.games = this.games.filter(game => game.id !== id)
+        const request = await gameService.getAllGames()
+        request.data.forEach(game => {
+          this.games.push(game)
+        })
       } catch (error) {
-        alert('Failed to delete' + error)
+        alert('Failed to load games')
+        console.log(error.message)
       }
     },
-    showEditCard (game) {
-      this.gameToEdit.id = game.id
-      this.gameToEdit.title = game.title
-      this.gameToEdit.img = game.img
-      this.gameToEdit.played = game.played
-      this.gameToEdit.release_year = game.release_year
-      this.gameToEdit.categories = game.categories
+    async createGame () {
+      try {
+        const newGame = this.newGame
+        const response = await gameService.createGame(newGame)
 
-      this.creating = false
-      this.editing = true
-      window.scrollTo(0, 0)
-    },
-    hideEditCard () {
-      this.editing = false
+        this.games = [...this.games, response.data]
+
+        this.newGame.title = ''
+        this.newGame.img = ''
+        this.newGame.played = ''
+        this.newGame.release_year = null
+        this.newGame.categories = ''
+      } catch (error) {
+        alert('Failed to create game')
+        console.log(error.message)
+      }
     },
     async editGame () {
       try {
@@ -178,8 +150,41 @@ export default {
           }
         })
       } catch (error) {
-        alert('Failed to edit' + error)
+        alert('Failed to edit game')
+        console.log(error.message)
       }
+    },
+    async deleteGame (id) {
+      try {
+        await gameService.deleteGame(id)
+        this.games = this.games.filter(game => game.id !== id)
+      } catch (error) {
+        alert('Failed to delete game')
+        console.log(error.message)
+      }
+    },
+    showCreateCard () {
+      this.editing = false
+      this.creating = true
+      window.scrollTo(0, 0)
+    },
+    hideCreateCard () {
+      this.creating = false
+    },
+    showEditCard (game) {
+      this.gameToEdit.id = game.id
+      this.gameToEdit.title = game.title
+      this.gameToEdit.img = game.img
+      this.gameToEdit.played = game.played
+      this.gameToEdit.release_year = game.release_year
+      this.gameToEdit.categories = game.categories
+
+      this.creating = false
+      this.editing = true
+      window.scrollTo(0, 0)
+    },
+    hideEditCard () {
+      this.editing = false
     }
   },
   created () {
