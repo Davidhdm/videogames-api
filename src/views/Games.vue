@@ -1,7 +1,8 @@
 <template>
   <div class="container">
     <div class="search_box">
-      <input type="search" name="search_game" placeholder="Search a game..." v-model="search">
+      <span class="iconify search_icon" data-icon="bx:bx-search"></span>
+      <input class="searchInput" type="search" name="search_game" placeholder="Search a game..." v-model="search">
     </div>
     <main class="games">
       <form class="newgame_card" v-if="creating">
@@ -408,6 +409,28 @@ export default {
 .cancelCreate:active {
   color: rgb(240, 60, 60);
   background-color: white;
+}
+
+.searchInput {
+  padding: 4px 8px;
+  padding-left: 38px;
+  border: none;
+  border-bottom: 1px solid black;
+  outline: none;
+  font-size: 20px;
+}
+
+.search_box {
+  position: relative;
+  max-width: max-content;
+  margin: 10px auto;
+}
+
+.search_icon {
+  position: absolute;
+  left: 0;
+  top: 3px;
+  font-size: 150%;
 }
 
 @media (max-width: 414px) {
