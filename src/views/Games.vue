@@ -1,78 +1,84 @@
 <template>
-  <main class="games">
-    <form class="newgame_card" v-if="creating">
-      <div class="newgame_imgContainer">
-        <textarea v-model="newGame.img" class="newgame_img" name="newgame_img" placeholder="Game picture" cols="30" rows="10"></textarea>
-        <button @click.prevent="createGame" class="newgame_submit" type="submit">
-          <span class="iconify" data-icon="subway:tick"></span>
-        </button>
-      </div>
-      <div class="newgame_info">
-        <input type="text" v-model="newGame.title" class="newgame_title" name="newgame_title" placeholder="Game title">
-        <div class="radiobuttons">
-          <div class="radio_option">
-            <input type="radio" v-model="newGame.played" id="radio_played" name="newgame_played" value="Played">
-            <label for="radio_played">Played</label>
-          </div>
-          <div class="radio_option">
-            <input type="radio" v-model="newGame.played" id="radio_notplayed" name="newgame_played" value="Not played">
-            <label for="radio_notplayed">Not played</label>
-          </div>
-          <div class="radio_option">
-            <input type="radio" v-model="newGame.played" id="radio_inprogress" name="newgame_played" value="In progress">
-            <label for="radio_inprogress">In progress</label>
-          </div>
+  <div class="container">
+    <div class="search_box">
+      <input type="search" name="search_game" placeholder="Search a game..." v-model="search">
+    </div>
+    <main class="games">
+      <form class="newgame_card" v-if="creating">
+        <div class="newgame_imgContainer">
+          <textarea v-model="newGame.img" class="newgame_img" name="newgame_img" placeholder="Game picture" cols="30" rows="10"></textarea>
+          <button @click.prevent="createGame" class="newgame_submit" type="submit">
+            <span class="iconify" data-icon="subway:tick"></span>
+          </button>
         </div>
-        <input type="number" v-model="newGame.release_year" class="newgame_year" name="newgame_year" placeholder="Game release year">
-        <input type="text" v-model="newGame.categories" class="newgame_categories" name="newgame_categories" placeholder="Categories">
-      </div>
-      <button @click="hideCreateCard" class="cancelCreate">
-        <span class="iconify cancelCreate_icon" data-icon="ci:close-small"></span>
-      </button>
-    </form>
-
-    <form class="newgame_card" v-if="editing">
-      <div class="newgame_imgContainer">
-        <textarea v-model="gameToEdit.img" class="newgame_img" name="newgame_img" placeholder="Game picture" cols="30" rows="10"></textarea>
-        <button @click.prevent="editGame" class="editgame_submit" type="submit">
-          <span class="iconify" data-icon="subway:tick"></span>
-        </button>
-      </div>
-      <div class="newgame_info">
-        <input type="text" v-model="gameToEdit.title" class="newgame_title" name="newgame_title" placeholder="Game title">
-        <div class="radiobuttons">
-          <div class="radio_option">
-            <input type="radio" v-model="gameToEdit.played" id="radio_played_edit" name="newgame_played" value="Played">
-            <label for="radio_played_edit">Played</label>
+        <div class="newgame_info">
+          <input type="text" v-model="newGame.title" class="newgame_title" name="newgame_title" placeholder="Game title">
+          <div class="radiobuttons">
+            <div class="radio_option">
+              <input type="radio" v-model="newGame.played" id="radio_played" name="newgame_played" value="Played">
+              <label for="radio_played">Played</label>
+            </div>
+            <div class="radio_option">
+              <input type="radio" v-model="newGame.played" id="radio_notplayed" name="newgame_played" value="Not played">
+              <label for="radio_notplayed">Not played</label>
+            </div>
+            <div class="radio_option">
+              <input type="radio" v-model="newGame.played" id="radio_inprogress" name="newgame_played" value="In progress">
+              <label for="radio_inprogress">In progress</label>
+            </div>
           </div>
-          <div class="radio_option">
-            <input type="radio" v-model="gameToEdit.played" id="radio_notplayed_edit" name="newgame_played" value="Not played">
-            <label for="radio_notplayed_edit">Not played</label>
-          </div>
-          <div class="radio_option">
-            <input type="radio" v-model="gameToEdit.played" id="radio_inprogress_edit" name="newgame_played" value="In progress">
-            <label for="radio_inprogress_edit">In progress</label>
-          </div>
+          <input type="number" v-model="newGame.release_year" class="newgame_year" name="newgame_year" placeholder="Game release year">
+          <input type="text" v-model="newGame.categories" class="newgame_categories" name="newgame_categories" placeholder="Categories">
         </div>
-        <input type="number" v-model="gameToEdit.release_year" class="newgame_year" name="newgame_year" placeholder="Game release year">
-        <input type="text" v-model="gameToEdit.categories" class="newgame_categories" name="newgame_categories" placeholder="Categories">
-      </div>
-      <button @click="hideEditCard" class="cancelCreate">
-        <span class="iconify cancelCreate_icon" data-icon="ci:close-small"></span>
-      </button>
-    </form>
+        <button @click="hideCreateCard" class="cancelCreate">
+          <span class="iconify cancelCreate_icon" data-icon="ci:close-small"></span>
+        </button>
+      </form>
 
-    <GameCard
-      @deleteGame="deleteGame"
-      @showEditCard="showEditCard"
-      :game="game"
-      v-for="game in games"
-      v-bind:key="game"
-    />
-    <button v-if="!creating" @click="showCreateCard" class="createGame">
-      <span class="iconify createGame_icon" data-icon="mdi:plus-thick"></span>
-    </button>
-  </main>
+      <form class="newgame_card" v-if="editing">
+        <div class="newgame_imgContainer">
+          <textarea v-model="gameToEdit.img" class="newgame_img" name="newgame_img" placeholder="Game picture" cols="30" rows="10"></textarea>
+          <button @click.prevent="editGame" class="editgame_submit" type="submit">
+            <span class="iconify" data-icon="subway:tick"></span>
+          </button>
+        </div>
+        <div class="newgame_info">
+          <input type="text" v-model="gameToEdit.title" class="newgame_title" name="newgame_title" placeholder="Game title">
+          <div class="radiobuttons">
+            <div class="radio_option">
+              <input type="radio" v-model="gameToEdit.played" id="radio_played_edit" name="newgame_played" value="Played">
+              <label for="radio_played_edit">Played</label>
+            </div>
+            <div class="radio_option">
+              <input type="radio" v-model="gameToEdit.played" id="radio_notplayed_edit" name="newgame_played" value="Not played">
+              <label for="radio_notplayed_edit">Not played</label>
+            </div>
+            <div class="radio_option">
+              <input type="radio" v-model="gameToEdit.played" id="radio_inprogress_edit" name="newgame_played" value="In progress">
+              <label for="radio_inprogress_edit">In progress</label>
+            </div>
+          </div>
+          <input type="number" v-model="gameToEdit.release_year" class="newgame_year" name="newgame_year" placeholder="Game release year">
+          <input type="text" v-model="gameToEdit.categories" class="newgame_categories" name="newgame_categories" placeholder="Categories">
+        </div>
+        <button @click="hideEditCard" class="cancelCreate">
+          <span class="iconify cancelCreate_icon" data-icon="ci:close-small"></span>
+        </button>
+      </form>
+
+      <GameCard
+        @deleteGame="deleteGame"
+        @showEditCard="showEditCard"
+        :game="game"
+        v-for="game in searchGames"
+        v-bind:key="game"
+      />
+
+      <button v-if="!creating" @click="showCreateCard" class="createGame">
+        <span class="iconify createGame_icon" data-icon="mdi:plus-thick"></span>
+      </button>
+    </main>
+  </div>
 </template>
 
 <script>
@@ -88,6 +94,7 @@ export default {
     return {
       creating: false,
       editing: false,
+      search: '',
       games: [],
       gameToEdit: {
         id: null,
@@ -185,6 +192,23 @@ export default {
     },
     hideEditCard () {
       this.editing = false
+    }
+  },
+  computed: {
+    searchGames () {
+      const games = []
+      this.games.forEach(game => {
+        const gameValues = Object.values(game)
+
+        for (let i = 0; i < gameValues.length; i++) {
+          const convertedValue = gameValues[i].toString().toLowerCase()
+          if (convertedValue.includes(this.search.toLowerCase())) {
+            games.push(game)
+            break
+          }
+        }
+      })
+      return games
     }
   },
   created () {
