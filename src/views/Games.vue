@@ -3,7 +3,28 @@
     <div class="search_box">
       <span class="iconify search_icon" data-icon="bx:bx-search"></span>
       <input class="searchInput" type="search" name="search_game" placeholder="Search a game..." v-model="search">
+      <span class="searchBy_dropdown">{{ searchType || 'Search by...' }}
+        <span class="iconify" data-icon="ic:sharp-arrow-back-ios-new" data-rotate="270deg"></span>
+      </span>
     </div>
+    <div class="filter_box">
+      <label @click="filterByPlayedStatus('all')" for="filter_all" class="filterRadioBtn_label">
+        <input v-model="filterPlayed" type="radio" class="filterRadioBtn" name="filterPlayed" id="filter_all" value="All" checked>Show all games
+      </label>
+
+      <label @click="filterByPlayedStatus('played')" for="filter_played" class="filterRadioBtn_label">
+        <input v-model="filterPlayed" type="radio" class="filterRadioBtn" name="filterPlayed" id="filter_played" value="Played">Show only played games
+      </label>
+
+      <label @click="filterByPlayedStatus('notplayed')" for="filter_notplayed" class="filterRadioBtn_label">
+        <input v-model="filterPlayed" type="radio" class="filterRadioBtn" name="filterPlayed" id="filter_notplayed" value="Not played">Show only unplayed games
+      </label>
+
+      <label @click="filterByPlayedStatus('inprogress')" for="filter_inprogress" class="filterRadioBtn_label">
+        <input v-model="filterPlayed" type="radio" class="filterRadioBtn" name="filterPlayed" id="filter_inprogress" value="In progress">Show only in progress games
+      </label>
+    </div>
+
     <main class="games">
       <form class="newgame_card" v-if="creating">
         <div class="newgame_imgContainer">
@@ -71,7 +92,7 @@
         @deleteGame="deleteGame"
         @showEditCard="showEditCard"
         :game="game"
-        v-for="game in searchGames"
+        v-for="game in filterGames"
         v-bind:key="game"
       />
 
@@ -96,6 +117,8 @@ export default {
       creating: false,
       editing: false,
       search: '',
+      searchType: '',
+      filterPlayed: 'all',
       games: [],
       gameToEdit: {
         id: null,
@@ -193,22 +216,55 @@ export default {
     },
     hideEditCard () {
       this.editing = false
+    },
+    filterByPlayedStatus (status) {
+      this.filterPlayed = status
     }
   },
   computed: {
-    searchGames () {
-      const games = []
-      this.games.forEach(game => {
-        const gameValues = Object.values(game)
+    filterGames () {
+      let games = []
+      const search = this.search.toString().toLowerCase()
 
-        for (let i = 0; i < gameValues.length; i++) {
-          const convertedValue = gameValues[i].toString().toLowerCase()
-          if (convertedValue.includes(this.search.toLowerCase())) {
-            games.push(game)
-            break
+      if (this.searchType === 'All' || this.searchType === '') {
+        this.games.forEach(game => {
+          const gameValues = Object.values(game)
+
+          for (let i = 0; i < gameValues.length; i++) {
+            const convertedValue = gameValues[i].toString().toLowerCase()
+
+            if (convertedValue.includes(search)) {
+              games.push(game)
+              break
+            }
           }
-        }
-      })
+        })
+      }
+
+      if (this.searchType === 'Title') {
+        games = this.games.filter(game => game.title.toLowerCase().includes(search))
+      }
+
+      if (this.searchType === 'Release year') {
+        games = this.games.filter(game => game.release_year.toString().includes(search))
+      }
+
+      if (this.searchType === 'Categories') {
+        games = this.games.filter(game => game.categories.toLowerCase().includes(search))
+      }
+
+      if (this.filterPlayed === 'Played') {
+        games = games.filter(game => game.played === 'Played')
+      }
+
+      if (this.filterPlayed === 'Not played') {
+        games = games.filter(game => game.played === 'Not played')
+      }
+
+      if (this.filterPlayed === 'In progress') {
+        games = games.filter(game => game.played === 'In progress')
+      }
+
       return games
     }
   },
@@ -431,6 +487,33 @@ export default {
   left: 0;
   top: 3px;
   font-size: 150%;
+}
+
+.filter_box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: absolute;
+  top: 40px;
+  right: 250px;
+}
+
+.filterRadioBtn {
+  margin: 5px;
+}
+
+.searchBy_dropdown {
+  border-bottom: solid 1px black;
+  font-size: 18px;
+  padding: 5px 0;
+  cursor: pointer;
+}
+
+.searchBy_dropdown {
+  border-bottom: solid 1px black;
+  font-size: 18px;
+  padding: 5px 0;
+  cursor: pointer;
 }
 
 @media (max-width: 414px) {
