@@ -302,7 +302,7 @@ export default {
   flex-direction: row;
   justify-content: center;
   flex-wrap: wrap;
-  margin: 0px auto;
+  margin: 50px auto;
   max-width: max-content;
 }
 
