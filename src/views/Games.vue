@@ -5,12 +5,13 @@
         <span class="iconify search_icon" data-icon="bx:bx-search"></span>
         <input class="searchInput" type="search" name="search_game" placeholder="Search a game..." v-model="search">
       </div>
-      <div @click="toggleDropdown" class="searchBy">
-        <span class="searchBy_dropdown">{{ searchType || 'Search by...' }}
+      <div  class="searchBy">
+        <a href="#" @click="toggleDropdown" @blur="dropDownIsOpen = false" class="searchBy_dropdown">
+          {{ searchType || 'Search by...' }}
           <span class="iconify searchBy_icon" data-icon="ic:sharp-arrow-back-ios-new" data-rotate="270deg"></span>
-        </span>
+        </a>
         <transition name="expand">
-          <div v-if="dropDownIsOpen" class="searchBy_options">
+          <div v-show="dropDownIsOpen" class="searchBy_options">
             <span @click="setSearchType('Title')" class="searchBy_option">Title</span>
             <span @click="setSearchType('Release year')" class="searchBy_option">Release year</span>
             <span @click="setSearchType('Categories')" class="searchBy_option">Categories</span>
@@ -108,7 +109,7 @@
         v-bind:key="game"
       />
 
-      <button v-if="!creating" @click="showCreateCard" class="createGame">
+      <button v-show="!creating" @click="showCreateCard" class="createGame">
         <span class="iconify createGame_icon" data-icon="mdi:plus-thick"></span>
       </button>
     </main>
@@ -130,7 +131,7 @@ export default {
       editing: false,
       search: '',
       searchType: '',
-      filterPlayed: 'all',
+      filterPlayed: 'All',
       dropDownIsOpen: false,
       games: [],
       gameToEdit: {
@@ -238,12 +239,14 @@ export default {
     },
     setSearchType (searchType) {
       this.searchType = searchType
-    }
+    }/* ,
+    closeDropDown (e) {
+      if (!this.$el.contains(e.target)) {
+        this.dropDownIsOpen = false
+      }
+    } */
   },
   computed: {
-    /* dropDownClass () {
-      return this.dropDownIsOpen ? 'searchBy_options open' : 'searchBy_options'
-    }, */
     filterGames () {
       let games = []
       const search = this.search.toString().toLowerCase()
@@ -293,6 +296,12 @@ export default {
   created () {
     this.getAllGames()
   }
+  /* mounted () {
+    document.addEventListener('click', this.closeDropDown)
+  },
+  beforeUnmount () {
+    document.removeEventListener('click', this.closeDropDown)
+  } */
 }
 </script>
 
@@ -492,6 +501,7 @@ export default {
 .search_box {
   display: flex;
   justify-content: center;
+  margin-top: 70px;
 }
 
 .searchInput {
@@ -530,13 +540,16 @@ export default {
 }
 
 .searchBy_dropdown {
-  min-width: 100%;
+  min-width: 147px;
+  width: 147px;
   border-bottom: solid 1px black;
   font-size: 20px;
   padding: 9px 9px 7px 9px;
   cursor: pointer;
   transition: background-color 0.15s ease;
   border-radius: 8px 8px 0 0;
+  text-decoration: none;
+  color: unset;
 }
 
 .searchBy_options {
