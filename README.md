@@ -1,5 +1,5 @@
 # videogames-api
-This is a WIP app to create, edit and delete games with their respective data.
+This is a WIP app to create, edit and delete games with their respective data. <br>
 Backend developed with NodeJS and Express.
 Frontend developed with Vue.
 
