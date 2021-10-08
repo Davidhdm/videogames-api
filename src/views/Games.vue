@@ -1,11 +1,23 @@
 <template>
   <div class="container">
     <div class="search_box">
-      <span class="iconify search_icon" data-icon="bx:bx-search"></span>
-      <input class="searchInput" type="search" name="search_game" placeholder="Search a game..." v-model="search">
-      <span class="searchBy_dropdown">{{ searchType || 'Search by...' }}
-        <span class="iconify" data-icon="ic:sharp-arrow-back-ios-new" data-rotate="270deg"></span>
-      </span>
+      <div class="searchInput_box">
+        <span class="iconify search_icon" data-icon="bx:bx-search"></span>
+        <input class="searchInput" type="search" name="search_game" placeholder="Search a game..." v-model="search">
+      </div>
+      <div @click="toggleDropdown" class="searchBy">
+        <span class="searchBy_dropdown">{{ searchType || 'Search by...' }}
+          <span class="iconify searchBy_icon" data-icon="ic:sharp-arrow-back-ios-new" data-rotate="270deg"></span>
+        </span>
+        <transition name="expand">
+          <div v-if="dropDownIsOpen" class="searchBy_options">
+            <span @click="setSearchType('Title')" class="searchBy_option">Title</span>
+            <span @click="setSearchType('Release year')" class="searchBy_option">Release year</span>
+            <span @click="setSearchType('Categories')" class="searchBy_option">Categories</span>
+            <span @click="setSearchType('All')" class="searchBy_option">All</span>
+          </div>
+        </transition>
+      </div>
     </div>
     <div class="filter_box">
       <label @click="filterByPlayedStatus('all')" for="filter_all" class="filterRadioBtn_label">
@@ -119,6 +131,7 @@ export default {
       search: '',
       searchType: '',
       filterPlayed: 'all',
+      dropDownIsOpen: false,
       games: [],
       gameToEdit: {
         id: null,
@@ -219,9 +232,18 @@ export default {
     },
     filterByPlayedStatus (status) {
       this.filterPlayed = status
+    },
+    toggleDropdown () {
+      this.dropDownIsOpen = !this.dropDownIsOpen
+    },
+    setSearchType (searchType) {
+      this.searchType = searchType
     }
   },
   computed: {
+    /* dropDownClass () {
+      return this.dropDownIsOpen ? 'searchBy_options open' : 'searchBy_options'
+    }, */
     filterGames () {
       let games = []
       const search = this.search.toString().toLowerCase()
@@ -467,6 +489,11 @@ export default {
   background-color: white;
 }
 
+.search_box {
+  display: flex;
+  justify-content: center;
+}
+
 .searchInput {
   padding: 4px 8px;
   padding-left: 38px;
@@ -476,10 +503,10 @@ export default {
   font-size: 20px;
 }
 
-.search_box {
+.searchInput_box {
   position: relative;
   max-width: max-content;
-  margin: 10px auto;
+  /* margin: 10px 0; */
 }
 
 .search_icon {
@@ -503,17 +530,59 @@ export default {
 }
 
 .searchBy_dropdown {
+  min-width: 100%;
   border-bottom: solid 1px black;
-  font-size: 18px;
-  padding: 5px 0;
+  font-size: 20px;
+  padding: 9px 9px 7px 9px;
   cursor: pointer;
+  transition: background-color 0.15s ease;
+  border-radius: 8px 8px 0 0;
 }
 
-.searchBy_dropdown {
-  border-bottom: solid 1px black;
-  font-size: 18px;
-  padding: 5px 0;
+.searchBy_options {
+  width: 147px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  font-size: 20px;
+  border: solid 1px black;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  position: absolute;
+  z-index: 5;
+  top: 33px;
+  overflow: hidden;
+}
+
+.searchBy_option {
+  padding: 9px 9px;
   cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.searchBy_option:hover {
+  background-color: rgb(95, 185, 241);
+}
+
+.searchBy {
+  position: relative;
+  min-width: 150px;
+  margin: 0px 20px;
+}
+
+.searchBy_dropdown:hover {
+  background-color: rgb(221, 221, 221);
+}
+
+.expand-enter-active,
+.expand-leave-active {
+  transition: opacity 0.15s ease;
+}
+
+.expand-enter-from,
+.expand-leave-to {
+  opacity: 0;
 }
 
 @media (max-width: 414px) {
