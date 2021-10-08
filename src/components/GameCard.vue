@@ -120,6 +120,8 @@ export default {
 
 .game_title,
 .game_played,
+.game_notplayed,
+.game_inprogress,
 .game_year,
 .game_categories {
   margin: 5px 0;
