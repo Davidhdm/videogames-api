@@ -239,12 +239,7 @@ export default {
     },
     setSearchType (searchType) {
       this.searchType = searchType
-    }/* ,
-    closeDropDown (e) {
-      if (!this.$el.contains(e.target)) {
-        this.dropDownIsOpen = false
-      }
-    } */
+    }
   },
   computed: {
     filterGames () {
@@ -296,12 +291,6 @@ export default {
   created () {
     this.getAllGames()
   }
-  /* mounted () {
-    document.addEventListener('click', this.closeDropDown)
-  },
-  beforeUnmount () {
-    document.removeEventListener('click', this.closeDropDown)
-  } */
 }
 </script>
 
