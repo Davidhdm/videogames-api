@@ -3,15 +3,15 @@
     <div class="search_box">
       <div class="searchInput_box">
         <span class="iconify search_icon" data-icon="bx:bx-search"></span>
-        <input class="searchInput" type="search" name="search_game" placeholder="Search a game..." v-model="search">
+        <input class="searchInput" type="search" name="search_game" placeholder="Search a game..." v-model="$store.state.search">
       </div>
       <div  class="searchBy">
-        <a href="#" @click="toggleDropdown" @blur="dropDownIsOpen = false" class="searchBy_dropdown">
-          {{ searchType || 'Search by...' }}
+        <a href="#" @click="toggleDropdown" @blur="$store.state.dropDownIsOpen = false" class="searchBy_dropdown">
+          {{ $store.state.searchType || 'Search by...' }}
           <span class="iconify searchBy_icon" data-icon="ic:sharp-arrow-back-ios-new" data-rotate="270deg"></span>
         </a>
         <transition name="expand">
-          <div v-show="dropDownIsOpen" class="searchBy_options">
+          <div v-show="$store.state.dropDownIsOpen" class="searchBy_options">
             <span @click="setSearchType('Title')" class="searchBy_option">Title</span>
             <span @click="setSearchType('Release year')" class="searchBy_option">Release year</span>
             <span @click="setSearchType('Categories')" class="searchBy_option">Categories</span>
@@ -22,94 +22,32 @@
     </div>
     <div class="filter_box">
       <label @click="filterByPlayedStatus('all')" for="filter_all" class="filterRadioBtn_label">
-        <input v-model="filterPlayed" type="radio" class="filterRadioBtn" name="filterPlayed" id="filter_all" value="All" checked>Show all games
+        <input v-model="$store.state.filterPlayed" type="radio" class="filterRadioBtn" name="filterPlayed" id="filter_all" value="All" checked>Show all games
       </label>
 
       <label @click="filterByPlayedStatus('played')" for="filter_played" class="filterRadioBtn_label">
-        <input v-model="filterPlayed" type="radio" class="filterRadioBtn" name="filterPlayed" id="filter_played" value="Played">Show only played games
+        <input v-model="$store.state.filterPlayed" type="radio" class="filterRadioBtn" name="filterPlayed" id="filter_played" value="Played">Show only played games
       </label>
 
       <label @click="filterByPlayedStatus('notplayed')" for="filter_notplayed" class="filterRadioBtn_label">
-        <input v-model="filterPlayed" type="radio" class="filterRadioBtn" name="filterPlayed" id="filter_notplayed" value="Not played">Show only unplayed games
+        <input v-model="$store.state.filterPlayed" type="radio" class="filterRadioBtn" name="filterPlayed" id="filter_notplayed" value="Not played">Show only unplayed games
       </label>
 
       <label @click="filterByPlayedStatus('inprogress')" for="filter_inprogress" class="filterRadioBtn_label">
-        <input v-model="filterPlayed" type="radio" class="filterRadioBtn" name="filterPlayed" id="filter_inprogress" value="In progress">Show only in progress games
+        <input v-model="$store.state.filterPlayed" type="radio" class="filterRadioBtn" name="filterPlayed" id="filter_inprogress" value="In progress">Show only in progress games
       </label>
     </div>
 
     <main class="games">
-      <form class="newgame_card" v-if="creating">
-        <div class="newgame_imgContainer">
-          <textarea v-model="newGame.img" class="newgame_img" name="newgame_img" placeholder="Game picture" cols="30" rows="10"></textarea>
-          <button @click.prevent="createGame" class="newgame_submit" type="submit">
-            <span class="iconify" data-icon="subway:tick"></span>
-          </button>
-        </div>
-        <div class="newgame_info">
-          <input type="text" v-model="newGame.title" class="newgame_title" name="newgame_title" placeholder="Game title">
-          <div class="radiobuttons">
-            <div class="radio_option">
-              <input type="radio" v-model="newGame.played" id="radio_played" name="newgame_played" value="Played">
-              <label for="radio_played">Played</label>
-            </div>
-            <div class="radio_option">
-              <input type="radio" v-model="newGame.played" id="radio_notplayed" name="newgame_played" value="Not played">
-              <label for="radio_notplayed">Not played</label>
-            </div>
-            <div class="radio_option">
-              <input type="radio" v-model="newGame.played" id="radio_inprogress" name="newgame_played" value="In progress">
-              <label for="radio_inprogress">In progress</label>
-            </div>
-          </div>
-          <input type="number" v-model="newGame.release_year" class="newgame_year" name="newgame_year" placeholder="Game release year">
-          <input type="text" v-model="newGame.categories" class="newgame_categories" name="newgame_categories" placeholder="Categories">
-        </div>
-        <button @click="hideCreateCard" class="cancelCreate">
-          <span class="iconify cancelCreate_icon" data-icon="ci:close-small"></span>
-        </button>
-      </form>
-
-      <form class="newgame_card" v-if="editing">
-        <div class="newgame_imgContainer">
-          <textarea v-model="gameToEdit.img" class="newgame_img" name="newgame_img" placeholder="Game picture" cols="30" rows="10"></textarea>
-          <button @click.prevent="editGame" class="editgame_submit" type="submit">
-            <span class="iconify" data-icon="subway:tick"></span>
-          </button>
-        </div>
-        <div class="newgame_info">
-          <input type="text" v-model="gameToEdit.title" class="newgame_title" name="newgame_title" placeholder="Game title">
-          <div class="radiobuttons">
-            <div class="radio_option">
-              <input type="radio" v-model="gameToEdit.played" id="radio_played_edit" name="newgame_played" value="Played">
-              <label for="radio_played_edit">Played</label>
-            </div>
-            <div class="radio_option">
-              <input type="radio" v-model="gameToEdit.played" id="radio_notplayed_edit" name="newgame_played" value="Not played">
-              <label for="radio_notplayed_edit">Not played</label>
-            </div>
-            <div class="radio_option">
-              <input type="radio" v-model="gameToEdit.played" id="radio_inprogress_edit" name="newgame_played" value="In progress">
-              <label for="radio_inprogress_edit">In progress</label>
-            </div>
-          </div>
-          <input type="number" v-model="gameToEdit.release_year" class="newgame_year" name="newgame_year" placeholder="Game release year">
-          <input type="text" v-model="gameToEdit.categories" class="newgame_categories" name="newgame_categories" placeholder="Categories">
-        </div>
-        <button @click="hideEditCard" class="cancelCreate">
-          <span class="iconify cancelCreate_icon" data-icon="ci:close-small"></span>
-        </button>
-      </form>
+      <CreateGameCard  v-if="$store.state.creating"/>
+      <EditGameCard  v-if="$store.state.editing"/>
 
       <GameCard
-        @deleteGame="deleteGame"
-        @showEditCard="showEditCard"
         :game="game"
         v-for="game in filterGames"
         v-bind:key="game"
       />
-
-      <button v-show="!creating" @click="showCreateCard" class="createGame">
+      <button v-show="!$store.state.creating" @click="showCreateCard" class="createGame">
         <span class="iconify createGame_icon" data-icon="mdi:plus-thick"></span>
       </button>
     </main>
@@ -118,136 +56,50 @@
 
 <script>
 import GameCard from '@/components/GameCard.vue'
+import CreateGameCard from '@/components/CreateGameCard.vue'
+import EditGameCard from '@/components/EditGameCard.vue'
 import { gameService } from '@/services/gameService.js'
 
 export default {
   name: 'Games',
   components: {
-    GameCard
-  },
-  data () {
-    return {
-      creating: false,
-      editing: false,
-      search: '',
-      searchType: '',
-      filterPlayed: 'All',
-      dropDownIsOpen: false,
-      games: [],
-      gameToEdit: {
-        id: null,
-        title: '',
-        img: '',
-        played: '',
-        release_year: null,
-        categories: ''
-      },
-      newGame: {
-        title: '',
-        img: '',
-        played: '',
-        release_year: null,
-        categories: ''
-      }
-    }
+    GameCard,
+    CreateGameCard,
+    EditGameCard
   },
   methods: {
     async getAllGames () {
       try {
         const request = await gameService.getAllGames()
-        request.data.forEach(game => {
-          this.games.push(game)
-        })
+        this.$store.state.games = request.data
+        console.log(this.$store.state.games)
       } catch (error) {
         alert('Failed to load games')
         console.log(error.message)
       }
     },
-    async createGame () {
-      try {
-        const newGame = this.newGame
-        const response = await gameService.createGame(newGame)
-
-        this.games = [...this.games, response.data]
-
-        this.newGame.title = ''
-        this.newGame.img = ''
-        this.newGame.played = ''
-        this.newGame.release_year = null
-        this.newGame.categories = ''
-      } catch (error) {
-        alert('Failed to create game')
-        console.log(error.message)
-      }
-    },
-    async editGame () {
-      try {
-        const editedGame = this.gameToEdit
-        await gameService.editGame(editedGame.id, editedGame)
-        this.hideEditCard()
-        this.games.forEach((game) => {
-          if (game.id === editedGame.id) {
-            game.title = editedGame.title
-            game.img = editedGame.img
-            game.played = editedGame.played
-            game.release_year = editedGame.release_year
-            game.categories = editedGame.categories
-          }
-        })
-      } catch (error) {
-        alert('Failed to edit game')
-        console.log(error.message)
-      }
-    },
-    async deleteGame (id) {
-      try {
-        await gameService.deleteGame(id)
-        this.games = this.games.filter(game => game.id !== id)
-      } catch (error) {
-        alert('Failed to delete game')
-        console.log(error.message)
-      }
+    filterByPlayedStatus (status) {
+      this.$store.state.filterPlayed = status
     },
     showCreateCard () {
-      this.editing = false
-      this.creating = true
+      this.$store.state.editing = false
+      this.$store.state.creating = true
       window.scrollTo(0, 0)
-    },
-    hideCreateCard () {
-      this.creating = false
-    },
-    showEditCard (game) {
-      this.gameToEdit.id = game.id
-      this.gameToEdit.title = game.title
-      this.gameToEdit.img = game.img
-      this.gameToEdit.played = game.played
-      this.gameToEdit.release_year = game.release_year
-      this.gameToEdit.categories = game.categories
-
-      this.creating = false
-      this.editing = true
-      window.scrollTo(0, 0)
-    },
-    hideEditCard () {
-      this.editing = false
-    },
-    filterByPlayedStatus (status) {
-      this.filterPlayed = status
     },
     toggleDropdown () {
-      this.dropDownIsOpen = !this.dropDownIsOpen
+      this.$store.state.dropDownIsOpen = !this.$store.state.dropDownIsOpen
     },
     setSearchType (searchType) {
-      this.searchType = searchType
+      this.$store.state.searchType = searchType
     }
   },
   computed: {
     filterGames () {
       let games = []
-      const search = this.search.toString().toLowerCase()
+      const search = this.$store.state.search.toString().toLowerCase()
 
-      if (this.searchType === 'All' || this.searchType === '') {
-        this.games.forEach(game => {
+      if (this.$store.state.searchType === 'All' || this.$store.state.searchType === '') {
+        this.$store.state.games.forEach(game => {
           const gameValues = Object.values(game)
 
           for (let i = 0; i < gameValues.length; i++) {
@@ -261,27 +113,27 @@ export default {
         })
       }
 
-      if (this.searchType === 'Title') {
-        games = this.games.filter(game => game.title.toLowerCase().includes(search))
+      if (this.$store.state.searchType === 'Title') {
+        games = this.$store.state.games.filter(game => game.title.toLowerCase().includes(search))
       }
 
-      if (this.searchType === 'Release year') {
-        games = this.games.filter(game => game.release_year.toString().includes(search))
+      if (this.$store.state.searchType === 'Release year') {
+        games = this.$store.state.games.filter(game => game.release_year.toString().includes(search))
       }
 
-      if (this.searchType === 'Categories') {
-        games = this.games.filter(game => game.categories.toLowerCase().includes(search))
+      if (this.$store.state.searchType === 'Categories') {
+        games = this.$store.state.games.filter(game => game.categories.toLowerCase().includes(search))
       }
 
-      if (this.filterPlayed === 'Played') {
+      if (this.$store.state.filterPlayed === 'Played') {
         games = games.filter(game => game.played === 'Played')
       }
 
-      if (this.filterPlayed === 'Not played') {
+      if (this.$store.state.filterPlayed === 'Not played') {
         games = games.filter(game => game.played === 'Not played')
       }
 
-      if (this.filterPlayed === 'In progress') {
+      if (this.$store.state.filterPlayed === 'In progress') {
         games = games.filter(game => game.played === 'In progress')
       }
 

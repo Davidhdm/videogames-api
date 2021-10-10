@@ -9,23 +9,45 @@
       <span class="game_year">{{ 'Released in ' + game.release_year }}</span>
       <span class="game_categories">{{ game.categories }}</span>
     </div>
-    <button @click="$emit('showEditCard', game)" class="editGame">
+    <button @click="showEditCard(game)" class="editGame">
       <span class="iconify" data-icon="clarity:edit-line"></span>
     </button>
-    <button @click="$emit('deleteGame', game.id)" class="deleteGame">
+    <button @click="deleteGame(game.id)" class="deleteGame">
       <span class="iconify deleteGame_icon" data-icon="carbon:delete"></span>
     </button>
   </div>
 </template>
 
 <script>
+import { gameService } from '@/services/gameService.js'
+
 export default {
   name: 'GameCard',
   props: {
     game: Object
   },
   methods: {
+    async deleteGame (id) {
+      try {
+        await gameService.deleteGame(id)
+        this.$store.state.games = this.$store.state.games.filter(game => game.id !== id)
+      } catch (error) {
+        alert('Failed to delete game')
+        console.log(error.message)
+      }
+    },
+    showEditCard (game) {
+      this.$store.state.gameToEdit.id = game.id
+      this.$store.state.gameToEdit.title = game.title
+      this.$store.state.gameToEdit.img = game.img
+      this.$store.state.gameToEdit.played = game.played
+      this.$store.state.gameToEdit.release_year = game.release_year
+      this.$store.state.gameToEdit.categories = game.categories
 
+      this.$store.state.creating = false
+      this.$store.state.editing = true
+      window.scrollTo(0, 0)
+    }
   },
   computed: {
     gameIsPlayedClass () {
@@ -86,9 +108,6 @@ export default {
   height: calc(100% - 42px);
   width: 100%;
   padding: 20px 30px;
-  /* border-top: 1px solid rgb(209, 209, 209);
-  border-right: 1px solid rgb(209, 209, 209);
-  border-bottom: 1px solid rgb(209, 209, 209); */
   border: 1px solid rgb(209, 209, 209);
   border-left: none;
   border-top-right-radius: 10px;
