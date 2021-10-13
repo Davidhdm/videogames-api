@@ -72,7 +72,6 @@ export default {
       try {
         const request = await gameService.getAllGames()
         this.$store.state.games = request.data
-        console.log(this.$store.state.games)
       } catch (error) {
         alert('Failed to load games')
         console.log(error.message)
@@ -156,132 +155,6 @@ export default {
   max-width: max-content;
 }
 
-.newgame_card {
-  position: relative;
-  height: 165px;
-  max-width: 450px;
-  min-width: 450px;
-  display:flex;
-  margin: 30px;
-  width: fit-content;
-  border-radius: 10px;
-  align-items: center;
-  -webkit-box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.3);
-  box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.3);
-  transition: transform 0.3s cubic-bezier(0.29, 1.74, 0.49, 1.52);
-}
-
-.newgame_card:hover, .newgame_card:focus-within {
-  transform: scale(1.07);
-}
-
-.newgame_imgContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  height: 100%;
-  min-width: 110px;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-}
-
-.newgame_img {
-  height: 100%;
-}
-
-.newgame_info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: left;
-  height: calc(100% - 42px);
-  width: 100%;
-  padding: 20px 30px;
-  border: 1px solid rgb(209, 209, 209);
-  border-left: none;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
-
-.newgame_info input {
-  outline: none;
-  padding: 4px;
-  border: solid 1px rgb(190, 190, 190);
-  border-radius: 4px;
-  transition: transform 0.3s cubic-bezier(0.29, 1.74, 0.49, 1.52);
-}
-
-.newgame_info input:hover, .newgame_info input:focus {
-  transform: scale(1.03);
-  border-color: rgb(95, 185, 241);
-}
-
-.newgame_img {
-  width: 70%;
-  height: 30%;
-  margin-top: 21px;
-  outline: none;
-  padding: 4px;
-  border: solid 1px rgb(190, 190, 190);
-  border-radius: 4px;
-  transition: transform 0.3s cubic-bezier(0.29, 1.74, 0.49, 1.52);
-}
-
-.newgame_img:hover, .newgame_img:focus {
-  transform: scale(1.03);
-  border-color: rgb(95, 185, 241);
-}
-
-.newgame_notplayed {
-  color: red;
-  font-weight: 700;
-}
-
-.newgame_title,
-.newgame_year,
-.newgame_categories {
-  margin: 5px 0;
-}
-
-.radiobuttons {
-  display: flex;
-  font-size: 80%;
-}
-
-.radio_option {
-  margin: 4px;
-}
-
-.newgame_submit {
-  margin-bottom: 20px;
-  width: 102px;
-  padding: 3px 3px;
-  padding-top: 6px;
-  border-radius: 4px;
-  font-size: 130%;
-  background-color: rgb(90, 235, 90);
-  border: solid 1px rgb(31, 209, 31);
-}
-
-.editgame_submit {
-  margin-bottom: 20px;
-  width: 102px;
-  padding: 3px 3px;
-  padding-top: 6px;
-  border-radius: 4px;
-  font-size: 130%;
-  background-color: rgb(95, 185, 241);
-  border: solid 1px rgb(0, 157, 255);
-  cursor: pointer;
-}
-
-.editgame_submit:hover,
-.editgame_submit:active {
-  color: rgb(0, 157, 255);
-  background-color: white;
-}
-
 .createGame {
   display: flex;
   justify-content: center;
@@ -296,46 +169,16 @@ export default {
   font-size: 220%;
   background-color: rgb(90, 235, 90);
   border: solid 1px rgb(31, 209, 31);
-}
-
-.cancelCreate {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 7px;
-  width: 35px;
-  height: 35px;
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  text-align: center;
-  font-size: 180%;
-  padding: 0;
-  background-color: rgb(240, 60, 60);
-  border: solid 1px rgb(226, 36, 36);
-}
-
-.createGame:hover,
-.createGame:active,
-.newgame_submit:hover,
-.newgame_submit:active {
-  color: rgb(31, 209, 31);
-  background-color: white;
-}
-
-.createGame, .cancelCreate, .newgame_submit, .editgame_submit {
-  /* background-color: rgb(95, 185, 241); */
   cursor: pointer;
-  /* border: solid 1px rgb(0, 157, 255); */
   transition:
     color 0.15s ease,
     background-color 0.15s ease,
     transform 0.15s ease;
 }
 
-.cancelCreate:hover,
-.cancelCreate:active {
-  color: rgb(240, 60, 60);
+.createGame:hover,
+.createGame:active {
+  color: rgb(31, 209, 31);
   background-color: white;
 }
 
@@ -437,16 +280,5 @@ export default {
 .expand-enter-from,
 .expand-leave-to {
   opacity: 0;
-}
-
-@media (max-width: 414px) {
-  .newgame_card {
-    min-width: 350px;
-    max-width: 350px;
-  }
-
-  .newgame_submit {
-    width: 85px;
-  }
 }
 </style>

@@ -76,12 +76,15 @@ export default {
   align-items: center;
   -webkit-box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.3);
   box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.3);
-  transition: transform 0.3s cubic-bezier(0.29, 1.74, 0.49, 1.52);
+  transition:
+    transform 0.15s ease,
+    background-color 0.05s ease;
 }
 
 .game_card:hover {
   cursor: pointer;
-  transform: scale(1.07);
+  transform: scale(1.02);
+  background-color: rgb(250, 250, 250);
 }
 
 .game_imgContainer {
