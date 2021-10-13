@@ -5,7 +5,7 @@ import store from './store'
 
 createApp(App).use(store).use(router).mount('#app')
 
-window.postMessage({
+/* window.postMessage({
   devtoolsEnabled: true,
   vueDetected: true
-}, '*')
+}, '*') */

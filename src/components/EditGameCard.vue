@@ -25,7 +25,7 @@
       <input type="number" v-model="$store.state.gameToEdit.release_year" class="editgame_year" name="editgame_year" placeholder="Game release year">
       <input type="text" v-model="$store.state.gameToEdit.categories" class="editgame_categories" name="editgame_categories" placeholder="Categories">
     </div>
-    <button @click="hideEditCard" class="cancelEdit">
+    <button @click.prevent="hideEditCard" class="cancelEdit">
       <span class="iconify" data-icon="ci:close-small"></span>
     </button>
   </form>
@@ -227,7 +227,7 @@ export default {
 
 .editgame_submit:hover,
 .editgame_submit:active {
-  color: rgb(31, 209, 31);
+  color: rgb(0, 157, 255);
   background-color: white;
 }
 

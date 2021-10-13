@@ -25,7 +25,7 @@
       <input type="number" v-model="$store.state.newGame.release_year" class="newgame_year" name="newgame_year" placeholder="Game release year">
       <input type="text" v-model="$store.state.newGame.categories" class="newgame_categories" name="newgame_categories" placeholder="Categories">
     </div>
-    <button @click="hideCreateCard" class="cancelCreate">
+    <button @click.prevent="hideCreateCard" class="cancelCreate">
       <span class="iconify" data-icon="ci:close-small"></span>
     </button>
   </form>
@@ -42,6 +42,7 @@ export default {
         const newGame = this.$store.state.newGame
         const response = await gameService.createGame(newGame)
 
+        /* this.hideCreateCard() */
         this.$store.state.games = [...this.$store.state.games, response.data]
 
         this.$store.state.newGame.title = ''

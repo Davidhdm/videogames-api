@@ -39,8 +39,8 @@
     </div>
 
     <main class="games">
-      <CreateGameCard  v-if="$store.state.creating"/>
-      <EditGameCard  v-if="$store.state.editing"/>
+      <CreateGameCard  v-show="$store.state.creating"/>
+      <EditGameCard  v-show="$store.state.editing"/>
 
       <GameCard
         :game="game"
