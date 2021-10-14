@@ -156,7 +156,7 @@ export default {
   width: 35px;
   height: 35px;
   position: absolute;
-  top: -10px;
+  top: -20px;
   font-size: 180%;
   padding: 7px;
   cursor: pointer;
@@ -195,8 +195,8 @@ export default {
 
 @media (max-width: 414px) {
   .game_card {
-    min-width: 350px;
-    max-width: 350px;
+    min-width: 330px;
+    max-width: 330px;
   }
 }
 </style>
