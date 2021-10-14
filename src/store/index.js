@@ -6,6 +6,7 @@ export default createStore({
     editing: false,
     search: '',
     searchType: '',
+    filterIsOpen: false,
     filterPlayed: 'All',
     dropDownIsOpen: false,
     games: [],
