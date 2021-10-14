@@ -20,7 +20,7 @@
             </div>
           </transition>
         </div>
-        <a href="#" @click="toggleFilter" @blur="closeFilter" class="openFilterBtn">
+        <a href="#" @click.stop="toggleFilter" @blur="closeFilter" class="openFilterBtn">
           <span class="iconify openFilterBtn_icon" data-icon="cil:filter"></span>
           <transition name="expand">
             <div v-show="$store.state.filterIsOpen" class="filter_box">
@@ -307,6 +307,7 @@ export default {
 }
 
 .filter_box {
+  cursor: default;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -325,6 +326,11 @@ export default {
   margin: 5px;
 }
 
+.filterRadioBtn_label {
+  margin: 3px 0;
+  font-size: 17px;
+}
+
 .expand-enter-active,
 .expand-leave-active {
   transition: opacity 0.25s ease;
@@ -336,6 +342,11 @@ export default {
 }
 
 @media (max-width: 414px) {
+  .createGame {
+    bottom: 25px;
+    left: 25px;
+  }
+
   .searchInput_box {
     max-width: 40vw;
   }
@@ -347,6 +358,35 @@ export default {
 
   .searchBy_options {
     right: 0;
+  }
+
+  .openFilterBtn {
+    position: fixed;
+    left: 80px;
+    bottom: 25px;
+    background-color: white;
+    z-index: 5;
+    height: 40px;
+    width: 40px;
+    border-radius: 7px;
+    border: solid 1px black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .openFilterBtn_icon:hover {
+    color: black;
+  }
+
+  .openFilterBtn_icon {
+    font-size: 150%;
+  }
+
+  .filter_box {
+    top: unset;
+    bottom: 60px;
+    left: 0px;
   }
 }
 </style>
