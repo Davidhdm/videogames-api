@@ -142,6 +142,9 @@ export default {
           games = games.filter(game => game.played === 'In progress')
           break
       }
+
+      // Sort the list by game title
+      games.sort((a, b) => (a.title > b.title ? 1 : -1))
       return games
     }
   },

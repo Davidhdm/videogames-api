@@ -42,14 +42,8 @@ export default {
         const newGame = this.$store.state.newGame
         const response = await gameService.createGame(newGame)
 
-        /* this.hideCreateCard() */
         this.$store.state.games = [...this.$store.state.games, response.data]
-
-        this.$store.state.newGame.title = ''
-        this.$store.state.newGame.img = ''
-        this.$store.state.newGame.played = ''
-        this.$store.state.newGame.release_year = null
-        this.$store.state.newGame.categories = ''
+        this.deleteCreateCardValues()
       } catch (error) {
         alert('Failed to create game')
         console.log(error.message)
@@ -57,6 +51,14 @@ export default {
     },
     hideCreateCard () {
       this.$store.state.creating = false
+      this.deleteCreateCardValues()
+    },
+    deleteCreateCardValues () {
+      this.$store.state.newGame.title = ''
+      this.$store.state.newGame.img = ''
+      this.$store.state.newGame.played = ''
+      this.$store.state.newGame.release_year = null
+      this.$store.state.newGame.categories = ''
     }
   }
 }
