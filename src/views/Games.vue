@@ -7,23 +7,23 @@
           <input class="searchInput" type="search" name="search_game" placeholder="Search..." v-model="$store.state.search">
         </div>
         <div class="searchBy">
-          <a href="#" @click="toggleSearchByDropdown" @blur="$store.state.dropDownIsOpen = false" class="searchBy_dropdown">
+          <a href="#" @click="toggleSearchByDropdown" @blur="$store.state.searchByDropdownIsOpen = false" class="searchBy_dropdown">
             {{ $store.state.searchType || 'Search by...' }}
             <span class="iconify searchBy_icon" data-icon="ic:sharp-arrow-back-ios-new" data-rotate="270deg"></span>
           </a>
           <transition name="expand">
-            <div v-show="$store.state.dropDownIsOpen" class="searchBy_options">
+            <div v-show="$store.state.searchByDropdownIsOpen" class="searchBy_options">
+              <span @click="setSearchType('All')" class="searchBy_option">All</span>
               <span @click="setSearchType('Title')" class="searchBy_option">Title</span>
               <span @click="setSearchType('Release year')" class="searchBy_option">Release year</span>
               <span @click="setSearchType('Categories')" class="searchBy_option">Categories</span>
-              <span @click="setSearchType('All')" class="searchBy_option">All</span>
             </div>
           </transition>
         </div>
         <div class="filterPlayed">
           <a href="#" @click="toggleFilterDropdown" @blur="$store.state.filterIsOpen = false" class="openFilterBtn searchBy_dropdown">
             <span class="iconify openFilterBtn_icon" data-icon="cil:filter"></span>
-            {{ $store.state.filterPlayed || 'All' }}
+            {{ currentSearchByStatus }}
           </a>
           <transition name="expand">
             <div v-show="$store.state.filterIsOpen" class="filter_box searchBy_options">
@@ -35,7 +35,7 @@
           </transition>
         </div>
       </div>
-      <h1 class="numberOfGames">{{ filterGames.length }} games</h1>
+      <h1 class="numberOfGames">{{ numberOfGames }}</h1>
     </header>
     <main class="games">
       <CreateGameCard  v-show="$store.state.creating"/>
@@ -95,42 +95,50 @@ export default {
     }
   },
   computed: {
+    numberOfGames () {
+      return `Showing ${this.filterGames.length} games`
+    },
+    currentSearchByStatus () {
+      return this.$store.state.filterPlayed || 'All'
+    },
     filterGames () {
       let games = []
       const storeState = this.$store.state
+      const searchType = storeState.searchType
+      const filterPlayed = storeState.filterPlayed
       const search = storeState.search.toString().toLowerCase()
 
-      if (storeState.searchType === 'All' || storeState.searchType === '') {
-        games = storeState.games.filter(game =>
-          game.title.toLowerCase().includes(search) ||
-          game.categories.toLowerCase().includes(search) ||
-          game.release_year.toString().includes(search))
+      switch (searchType) {
+        case '':
+        case 'All':
+          games = storeState.games.filter(game =>
+            game.title.toLowerCase().includes(search) ||
+            game.categories.toLowerCase().includes(search) ||
+            game.release_year.toString().includes(search)
+          )
+          break
+        case 'Title':
+          games = storeState.games.filter(game => game.title.toLowerCase().includes(search))
+          break
+        case 'Release year':
+          games = storeState.games.filter(game => game.release_year.toString().includes(search))
+          break
+        case 'Categories':
+          games = storeState.games.filter(game => game.categories.toLowerCase().includes(search))
+          break
       }
 
-      if (storeState.searchType === 'Title') {
-        games = storeState.games.filter(game => game.title.toLowerCase().includes(search))
+      switch (filterPlayed) {
+        case 'Played':
+          games = games.filter(game => game.played === 'Played')
+          break
+        case 'Not played':
+          games = games.filter(game => game.played === 'Not played')
+          break
+        case 'In progress':
+          games = games.filter(game => game.played === 'In progress')
+          break
       }
-
-      if (storeState.searchType === 'Release year') {
-        games = storeState.games.filter(game => game.release_year.toString().includes(search))
-      }
-
-      if (storeState.searchType === 'Categories') {
-        games = storeState.games.filter(game => game.categories.toLowerCase().includes(search))
-      }
-
-      if (storeState.filterPlayed === 'Played') {
-        games = games.filter(game => game.played === 'Played')
-      }
-
-      if (storeState.filterPlayed === 'Not played') {
-        games = games.filter(game => game.played === 'Not played')
-      }
-
-      if (storeState.filterPlayed === 'In progress') {
-        games = games.filter(game => game.played === 'In progress')
-      }
-
       return games
     }
   },
@@ -294,19 +302,7 @@ export default {
 }
 
 .filter_box {
-  cursor: default;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  position: absolute;
-  top: 40px;
-  z-index: 5;
-  width: max-content;
-  background-color: white;
-  -webkit-box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.3);
-  box-shadow: 0px 0px 18px 3px rgba(0,0,0,0.3);
-  border-radius: 8px;
-  padding: 9px;
+  top: 90px;
 }
 
 .filterRadioBtn {
