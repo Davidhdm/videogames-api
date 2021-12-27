@@ -64,6 +64,8 @@ export default {
 
 <style scoped>
 .editgame_card {
+  border: 1px solid var(--dark-color3);
+  background-color: var(--dark-color2);
   position: relative;
   height: 165px;
   max-width: 450px;
@@ -83,7 +85,7 @@ export default {
 .editgame_card:hover,
 .editgame_card:focus-within {
   transform: scale(1.02);
-  background-color: rgb(250, 250, 250);
+  background-color: var(--dark-color3);
 }
 
 .editgame_imgContainer {
@@ -109,7 +111,6 @@ export default {
   height: calc(100% - 42px);
   width: 100%;
   padding: 20px 30px;
-  border: 1px solid rgb(209, 209, 209);
   border-left: none;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;

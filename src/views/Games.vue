@@ -152,6 +152,10 @@ export default {
 </script>
 
 <style>
+body {
+  background-color: var(--dark-color1);
+  color: var(--light-color1);
+}
 .games {
   display: flex;
   flex-direction: row;
@@ -251,7 +255,7 @@ export default {
 
 .searchBy_options {
   width: 147px;
-  background-color: white;
+  background-color: var(--dark-color2);
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -279,7 +283,7 @@ export default {
   position: relative;
   display: flex;
   margin: 0px 12px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--light-color1);
   height: max-content;
 }
 
@@ -290,7 +294,7 @@ export default {
   height: min-content;
   max-height: min-content;
   padding: 3px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--light-color1);
   position: relative;
   text-decoration: none;
   color: unset;
