@@ -8,7 +8,7 @@ export default createStore({
     searchType: '',
     filterIsOpen: false,
     filterPlayed: 'All',
-    dropDownIsOpen: false,
+    searchByDropdownIsOpen: false,
     games: [],
     gameToEdit: {
       id: null,
