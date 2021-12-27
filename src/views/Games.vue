@@ -8,7 +8,7 @@
         </div>
         <div class="searchBy">
           <a href="#" @click="toggleSearchByDropdown" @blur="$store.state.searchByDropdownIsOpen = false" class="searchBy_dropdown">
-            {{ $store.state.searchType || 'Search by...' }}
+            {{ currentSearchByStatus }}
             <span class="iconify searchBy_icon" data-icon="ic:sharp-arrow-back-ios-new" data-rotate="270deg"></span>
           </a>
           <transition name="expand">
@@ -23,7 +23,7 @@
         <div class="filterPlayed">
           <a href="#" @click="toggleFilterDropdown" @blur="$store.state.filterIsOpen = false" class="openFilterBtn searchBy_dropdown">
             <span class="iconify openFilterBtn_icon" data-icon="cil:filter"></span>
-            {{ currentSearchByStatus }}
+            {{ currentFilterPlayedStatus }}
           </a>
           <transition name="expand">
             <div v-show="$store.state.filterIsOpen" class="filter_box searchBy_options">
@@ -99,6 +99,9 @@ export default {
       return `Showing ${this.filterGames.length} games`
     },
     currentSearchByStatus () {
+      return this.$store.state.searchType || 'Search by...'
+    },
+    currentFilterPlayedStatus () {
       return this.$store.state.filterPlayed || 'All'
     },
     filterGames () {
