@@ -13,7 +13,7 @@
           </a>
           <transition name="expand">
             <div v-show="$store.state.searchByDropdownIsOpen" class="searchBy_options">
-              <span @click="setSearchType('All')" class="searchBy_option">All</span>
+              <span @click="setSearchType('')" class="searchBy_option">All</span>
               <span @click="setSearchType('Title')" class="searchBy_option">Title</span>
               <span @click="setSearchType('Release year')" class="searchBy_option">Release year</span>
               <span @click="setSearchType('Categories')" class="searchBy_option">Categories</span>
@@ -113,7 +113,6 @@ export default {
 
       switch (searchType) {
         case '':
-        case 'All':
           games = storeState.games.filter(game =>
             game.title.toLowerCase().includes(search) ||
             game.categories.toLowerCase().includes(search) ||
